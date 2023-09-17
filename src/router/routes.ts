@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/first",
     name: "home",
-    redirect: "/first/login",
+    redirect: "/first/menu",
     children: [
       {
         path: "login",
@@ -20,15 +20,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import("../views/first-test/Login.vue"),
       },
       {
-        path: "guidance",
-        name: "guidance",
-        component: () => import("../views/first-test/Guidance.vue"),
+        path: "menu",
+        name: "menu",
+        component: () => import("../views/menu/menu.vue"),
       },
-      {
-        path: "test1",
-        name: "test1",
-        component: () => import("../views/first-test/TestPage.vue"),
-      },
+      
     ],
   },
   {

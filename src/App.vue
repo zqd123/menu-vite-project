@@ -15,27 +15,7 @@ window.onunload = function () {
 </script>
 
 <template>
-  <div>
-    <!-- <div
-      class="fixed left-2 top-2"
-      title="首页"
-      @click="router.push({ path: '/login' })"
-    >
-      <el-icon color="#409EFC"> <HomeFilled /> </el-icon>实验一
-    </div> -->
-    <!-- <div class="fixed left-2 top-2">
-      <RouterLink to="/first">实验一</RouterLink>
-
-      <RouterLink
-        to="/seconde/test2?customType=small&customIndex=1&customSecond=10"
-        >实验二small</RouterLink
-      >
-    </div> -->
-    <!-- <div class="fixed right-2 bottom-2" @click="showHistory">
-      <el-icon color="#409EFC">
-        <Clock />
-      </el-icon>
-    </div> -->
+  <div class="h-full flex justify-start">
     <RouterView></RouterView>
   </div>
 </template>
