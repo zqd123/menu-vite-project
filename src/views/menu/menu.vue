@@ -26,17 +26,26 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { menu1, menu2, menu3, menuChild } from "./params";
+const isHide = ref(false)// 展开下级菜单,隐藏上级菜单
 const isShowFirstMenu = ref(true)
 const isShowSecondMenu = ref(false)
 const isShowThirdMenu = ref(false)
 //一级菜单
 const firstMenuClick = ()=>{
   console.log('一级菜单点击');
+  if(isHide.value){
+    isShowFirstMenu.value = false
+  }
   isShowSecondMenu.value =true
+  // isShowSecondMenu.value =!isShowSecondMenu.value
 }
 
 // 二级菜单
 const secondMenuClick = ()=>{
+  if(isHide.value){
+    isShowFirstMenu.value = false
+    isShowSecondMenu.value = false
+  }
   isShowThirdMenu.value = true
 }
 
