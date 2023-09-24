@@ -24,7 +24,7 @@
     <transition name="fade">
       <div
         v-show="isShowFirstMenu"
-        class="bg-blue-950 flex  gap-4 p-4 text-white"
+        class="bg-gradient-to-r from-indigo-500 flex  gap-4 p-4 text-white"
         :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
       >
         <div
@@ -41,7 +41,7 @@
     <transition name="fade">
       <div
         v-show="isShowSecondMenu"
-        class="bg-stone-300 flex gap-4 p-4 text-black"
+        class="bg-blue-300 flex gap-4 p-4 text-black"
         :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
       >
         <div
