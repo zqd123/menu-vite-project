@@ -1,5 +1,8 @@
 <template>
-  <div class="flex h-full w-full" :class="isGlobalColumn?'flex-col':'flex-row'">
+  <div
+    class="flex h-full w-full"
+    :class="isGlobalColumn ? 'flex-col' : 'flex-row'"
+  >
     <div class="flex !absolute right-0 top-0 opacity-0">
       <el-switch
         v-model="isHide"
@@ -24,14 +27,14 @@
     <transition name="fade">
       <div
         v-show="isShowFirstMenu"
-        class="bg-gradient-to-r from-indigo-500 flex  gap-4 p-4 text-white"
+        class="bg-gradient-to-b from-blue-900 to-blue-800 flex gap-4 p-4 text-white"
         :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
       >
         <div
           v-for="item in menu1"
           :key="item.id"
           @click="firstMenuClick"
-          class="font-bold"
+          class="w-32 font-bold min-w-max border border-blue-400 rounded-sm py-1 px-2"
         >
           {{ item.name }}
         </div>
@@ -48,7 +51,7 @@
           v-for="item in menu2Arr"
           :key="item.id"
           @click="secondMenuClick"
-          class="font-bold"
+          class="w-32 font-bold min-w-max border border-blue-400  rounded-sm py-1 px-2"
         >
           {{ item.name }}
         </div>
@@ -58,18 +61,28 @@
     <transition name="fade">
       <div
         v-show="isShowThirdMenu"
-        class="flex-1 bg-white flex  gap-4 p-4 text-black"
+        class="flex-1 bg-gray-300 flex gap-4 p-4 text-black"
         :class="thirdCenter"
       >
         <div
           v-for="item in menu3Arr"
           :key="item.id"
-          class="flex items-center gap-4 "
+          class="flex items-center gap-4"
           :class="!isThirdColumn ? 'flex-row' : 'flex-col'"
         >
-          <span class="font-bold">{{ item.name }}</span>
-          <div class="flex gap-4" :class="!isThirdColumn ? 'flex-row' : 'flex-col'">
-            <div v-for="item in menu3ChildArr" :key="item.id" @click="selectClick">
+          <span class="font-bold w-32 border border-blue-400 rounded-sm py-1 px-2">{{
+            item.name
+          }}</span>
+          <div
+            class="flex gap-4"
+            :class="!isThirdColumn ? 'flex-row' : 'flex-col'"
+          >
+            <div
+              v-for="item in menu3ChildArr"
+              :key="item.id"
+              @click="selectClick"
+              class="w-32  min-w-max border border-blue-400 rounded-sm py-1 px-2"
+            >
               {{ item.name }}
             </div>
           </div>
@@ -81,24 +94,29 @@
 <script lang="ts" setup>
 import { ElMessageBox } from "element-plus";
 import { computed, ref } from "vue";
-import { Menu,menu1, menu2, menu3, menuChild,randomMenu } from "./params";
+import { Menu, menu1, menu2, menu3, menuChild, randomMenu } from "./params";
 const menu2Arr = ref<Menu[]>([]);
 const menu3Arr = ref<Menu[]>([]);
 const menu3ChildArr = ref<Menu[]>([]);
 const isHide = ref(false); // 展开下级菜单,隐藏上级菜单
-const isGlobalColumn = ref(false);// 菜单全局方向
+const isGlobalColumn = ref(false); // 菜单全局方向
 const isThirdColumn = ref(false); // 三级菜单方向
 const isShowFirstMenu = ref(true);
 const isShowSecondMenu = ref(false);
 const isShowThirdMenu = ref(false);
-const thirdCenter = computed(()=>{
+const thirdCenter = computed(() => {
   if (isThirdColumn.value) {
-    return 'flex-row ' + `${isGlobalColumn.value ? 'justify-center':'justify-start'}`
+    return (
+      "flex-row " +
+      `${isGlobalColumn.value ? "justify-center " : "justify-start"}`
+    );
   } else {
-    return 'flex-col '+ `${isGlobalColumn.value ? 'items-center':'items-start'}`
-    
-  } 
-})
+    return (
+      "flex-col " +
+      `${isGlobalColumn.value ? "items-center  pl-36" : "items-start"}`
+    );
+  }
+});
 
 const initTime = new Date(); // 初始时间
 
@@ -109,7 +127,7 @@ const firstMenuClick = () => {
     isShowFirstMenu.value = false;
   }
   isShowSecondMenu.value = true;
-  menu2Arr.value = randomMenu(2)
+  menu2Arr.value = randomMenu(2);
 
   // isShowSecondMenu.value =!isShowSecondMenu.value
 };
@@ -121,8 +139,8 @@ const secondMenuClick = () => {
     isShowSecondMenu.value = false;
   }
   isShowThirdMenu.value = true;
-  menu3Arr.value = randomMenu(3)
-  menu3ChildArr.value = randomMenu(4)
+  menu3Arr.value = randomMenu(3);
+  menu3ChildArr.value = randomMenu(4);
 };
 
 //选中
