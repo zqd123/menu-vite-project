@@ -1,6 +1,17 @@
 import { ElMessageBox } from "element-plus";
 import { computed, ref } from "vue";
+import {useProcessData} from "./useProcessDataHook"
 import { Menu, menu1, menu2, menu3, menuChild, randomMenu } from "./params";
+const {
+  allMenu,
+  remainMenu,
+  mapData,
+  getRandomData,
+  changeRemainMenu,
+  menuTree,
+  initMenu,
+  createLevelDataList
+} = useProcessData();
 export function useMenu() {
   const menu2Arr = ref<Menu[]>([]);
   const menu3Arr = ref<Menu[]>([]);
@@ -11,6 +22,13 @@ export function useMenu() {
   const isShowFirstMenu = ref(true);
   const isShowSecondMenu = ref(false);
   const isShowThirdMenu = ref(false);
+
+  /**
+   * 初始化菜单
+   */
+  function initMenu() {
+
+  }
   const thirdCenter = computed(() => {
     if (isThirdColumn.value) {
       return (
