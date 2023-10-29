@@ -1,29 +1,9 @@
 <template>
+  <OperateBars></OperateBars>
   <div
     class="flex h-full w-full"
     :class="isGlobalColumn ? 'flex-col' : 'flex-row'"
   >
-    <div class="flex !absolute right-0 top-0 opacity-0">
-      <el-switch
-        v-model="isHide"
-        @change="refreshStatus"
-        inline-prompt
-        active-text="隐藏"
-        inactive-text="展示"
-      />
-      <el-switch
-        v-model="isThirdColumn"
-        inline-prompt
-        active-text="三级横向"
-        inactive-text="三级竖向"
-      />
-      <el-switch
-        v-model="isGlobalColumn"
-        inline-prompt
-        active-text="横向"
-        inactive-text="竖向"
-      />
-    </div>
     <transition name="fade">
       <div
         v-show="isShowFirstMenu"
@@ -31,12 +11,12 @@
         :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
       >
         <div
-          v-for="item in menu1"
-          :key="item.id"
-          @click="firstMenuClick"
+          v-for="item in menuLevel1"
+          :key="item.menuId"
+          @click="firstMenuClick(item)"
           class="w-32 font-bold min-w-max border border-blue-400 rounded-sm py-1 px-2"
         >
-          {{ item.name }}
+          {{ item.menuName }}
         </div>
       </div>
     </transition>
@@ -48,12 +28,12 @@
         :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
       >
         <div
-          v-for="item in menu2Arr"
-          :key="item.id"
-          @click="secondMenuClick"
+          v-for="item in menuLevel2"
+          :key="item.menuId"
+          @click="secondMenuClick(item)"
           class="w-32 font-bold min-w-max border border-blue-400  rounded-sm py-1 px-2"
         >
-          {{ item.name }}
+          {{ item.menuName }}
         </div>
       </div>
     </transition>
@@ -65,25 +45,25 @@
         :class="thirdCenter"
       >
         <div
-          v-for="item in menu3Arr"
-          :key="item.id"
+          v-for="parent in menuLevel3"
+          :key="parent.menuId"
           class="flex items-center gap-4"
           :class="!isThirdColumn ? 'flex-row' : 'flex-col'"
         >
           <span class="font-bold w-32 border border-blue-400 rounded-sm py-1 px-2">{{
-            item.name
+            parent.menuName
           }}</span>
           <div
             class="flex gap-4"
             :class="!isThirdColumn ? 'flex-row' : 'flex-col'"
           >
             <div
-              v-for="item in menu3ChildArr"
-              :key="item.id"
-              @click="selectClick"
+              v-for="child in parent.children"
+              :key="child.menuId"
+              @click="selectClick(child)"
               class="w-32  min-w-max border border-blue-400 rounded-sm py-1 px-2"
             >
-              {{ item.name }}
+              {{ child.menuName }}
             </div>
           </div>
         </div>
@@ -92,8 +72,19 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { Menu, menu1, menu2, menu3, menuChild, randomMenu } from "./params";
 import {useMenu} from './menuHook'
+import OperateBars from "./OperateBars.vue";
+import {Menu, useProcessData } from "./useProcessDataHook";
+import { onMounted, ref, unref } from "vue";
+const {
+  allMenu,
+  remainMenu,
+  mapData,
+  getRandomData,
+  changeRemainMenu,
+  menuTree,
+  createLevelDataList,
+} = useProcessData();
 const {
     menu2Arr,
     menu3Arr,
@@ -108,8 +99,16 @@ const {
     firstMenuClick,
     secondMenuClick,
     selectClick,
-    refreshStatus
+    refreshStatus,
+    initMenu,
+    menuLevel1,
+    menuLevel2,
+    menuLevel3,
 } = useMenu()
+
+ onMounted(() => {
+  initMenu(5)
+ })
 </script>
 <style scoped>
 .fade-enter-active,

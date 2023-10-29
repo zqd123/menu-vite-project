@@ -1,7 +1,7 @@
-import * as fs from "fs/promises";
-import path from "path";
+
+import axios from "axios";
 import { ref } from "vue";
-interface Menu {
+ export interface Menu {
   menuId: string;
   menuName: string;
   parentId?: string;
@@ -20,9 +20,9 @@ export function useProcessData() {
    * @returns {array} 菜单字符串数组
    */
   async function readFile():Promise<string[]> {
-    const filePath = path.resolve() + "/src/views/menu/stringData.txt";
-    const str = await fs.readFile(filePath, "utf8");
-    const strArr = str.split(/\n/);
+    const {data} = await axios.get('/src/views/menu/stringData.txt')
+    console.log("🚀 ~ file: useProcessDataHook.ts:28 ~ readFile ~ str:", data)
+    const strArr = data.split(/\n/).filter((item:string):boolean => item.trim() !== '');
     return strArr;
   }
   /**
@@ -41,7 +41,7 @@ export function useProcessData() {
    * @param {array} arr 数组
    * @param {number} num 获取数量
    */
-  function getRandomData(arr:Menu[], num:number = 5, { changeRemainMenu } = {changeRemainMenu:(arr: Menu[], result: Menu[]) => void}) {
+  function getRandomData(arr:Menu[], num:number = 5, { changeRemainMenu } = {changeRemainMenu:(arr: Menu[], result: Menu[])=>{}}) {
     arr = JSON.parse(JSON.stringify(arr));
     const result:Menu[] = [];
     while (num > 0) {
@@ -107,7 +107,7 @@ export function useProcessData() {
         child.parentId = item.menuId;
         return child;
       });
-      item.children.map((item) => {
+      item.children.map((item:Menu) => {
         item.children = getRandomData(allMenu.value, num).map((child) => {
           child.parentId = item.menuId;
           return child;
@@ -122,8 +122,11 @@ export function useProcessData() {
    * @param {array} 父级数组
    * @return {array} 当前层级数组
    */
-  function createLevelDataList(arr:Menu[],num:number){
-    return arr.reduce(
+  function createLevelDataList(num:number,option:{parentList?:Menu[]}={}){
+    if (!option.parentList) {
+      return getRandomData(allMenu.value,num)
+    }
+    return option.parentList.reduce(
       (acc, item) => {
         const _currentArr = getRandomData(allMenu.value, num).map((child) => {
           child.parentId = item.menuId;
@@ -144,18 +147,18 @@ export function useProcessData() {
     createLevelDataList
   };
 }
-const {
-  allMenu,
-  remainMenu,
-  mapData,
-  getRandomData,
-  changeRemainMenu,
-  menuTree,
-  initMenu,
-  createLevelDataList
-} = useProcessData();
-allMenu.value = await mapData();
-console.log("🚀 ~ file: fileRead.js:64 ~ allMenu.value:", allMenu.value);
+// const {
+//   allMenu,
+//   remainMenu,
+//   mapData,
+//   getRandomData,
+//   changeRemainMenu,
+//   menuTree,
+//   initMenu,
+//   createLevelDataList
+// } = useProcessData();
+// allMenu.value = await mapData();
+// console.log("🚀 ~ file: fileRead.js:64 ~ allMenu.value:", allMenu.value);
 
 // const randomMenu1 = getRandomData(allMenu.value, 5, { changeRemainMenu });
 // console.log("🚀 ", randomMenu1);
@@ -164,9 +167,9 @@ console.log("🚀 ~ file: fileRead.js:64 ~ allMenu.value:", allMenu.value);
 // const randomMenu3 = getRandomData(remainMenu.value, 5);
 // console.log("🚀 ", randomMenu3);
 
-const menuLevel1 = getRandomData(allMenu.value, 2);
-console.log("🚀 ~ file: useProcessDataHook.js:157 ~ menuLevel1:", menuLevel1)
-const menuLevel2 = createLevelDataList(menuLevel1,2);
-console.log("🚀 ~ file: useProcessDataHook.js:160 ~ menuLevel2:", menuLevel2)
-const menuLevel3 = createLevelDataList(menuLevel2,2);
-console.log("🚀 ~ file: useProcessDataHook.js:163 ~ menuLevel3:", menuLevel3)
+// const menuLevel1 = getRandomData(allMenu.value, 2);
+// console.log("🚀 ~ file: useProcessDataHook.js:157 ~ menuLevel1:", menuLevel1)
+// const menuLevel2 = createLevelDataList(menuLevel1,2);
+// console.log("🚀 ~ file: useProcessDataHook.js:160 ~ menuLevel2:", menuLevel2)
+// const menuLevel3 = createLevelDataList(menuLevel2,2);
+// console.log("🚀 ~ file: useProcessDataHook.js:163 ~ menuLevel3:", menuLevel3)

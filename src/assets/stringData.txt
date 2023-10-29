@@ -1,0 +1,11 @@
+file
+command
+display
+cursor
+directory
+option
+character
+current
+screen
+specify
+file

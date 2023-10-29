@@ -1,7 +1,6 @@
 import { ElMessageBox } from "element-plus";
 import { computed, ref } from "vue";
-import {useProcessData} from "./useProcessDataHook"
-import { Menu, menu1, menu2, menu3, menuChild, randomMenu } from "./params";
+import { Menu, useProcessData } from "./useProcessDataHook";
 const {
   allMenu,
   remainMenu,
@@ -10,7 +9,7 @@ const {
   changeRemainMenu,
   menuTree,
   initMenu,
-  createLevelDataList
+  createLevelDataList,
 } = useProcessData();
 export function useMenu() {
   const menu2Arr = ref<Menu[]>([]);
@@ -23,11 +22,33 @@ export function useMenu() {
   const isShowSecondMenu = ref(false);
   const isShowThirdMenu = ref(false);
 
+  const menuLevel1List = ref<Menu[]>([]);
+  const menuLevel2List = ref<Menu[]>([]);
+  const menuLevel3List = ref<Menu[]>([]);
+
+  /**第一级菜单 */
+  const menuLevel1 = ref<Menu[]>([]);
+  /**第二级菜单 */
+  const menuLevel2 = ref<Menu[]>([]);
+  /**第三级菜单 */
+  const menuLevel3 = ref<Menu[]>([]);
+
   /**
    * 初始化菜单
    */
-  function initMenu() {
+  async function initMenu(everyLevelNum=5) {
+    allMenu.value = await mapData();
 
+    menuLevel1List.value = createLevelDataList(everyLevelNum);
+    menuLevel1.value = menuLevel1List.value;
+    menuLevel2List.value = createLevelDataList(everyLevelNum,{parentList:menuLevel1List.value});
+    console.log("🚀 ~ file: menuHook.ts:46 ~ initMenu ~ menuLevel2List.value:", menuLevel2List.value)
+    const arr = createLevelDataList(everyLevelNum,{parentList:menuLevel2List.value});
+    menuLevel3List.value= arr.map(item=>{
+      item.children=getRandomData(allMenu.value, everyLevelNum)
+      return item
+    })
+    console.log("🚀 ~ file: menuHook.ts:51 ~ initMenu ~ menuLevel3List.value:", menuLevel3List.value)
   }
   const thirdCenter = computed(() => {
     if (isThirdColumn.value) {
@@ -46,31 +67,30 @@ export function useMenu() {
   const initTime = new Date(); // 初始时间
 
   //一级菜单
-  const firstMenuClick = () => {
+  const firstMenuClick = (m:Menu) => {
     console.log("一级菜单点击");
     if (isHide.value) {
       isShowFirstMenu.value = false;
     }
     isShowSecondMenu.value = true;
-    menu2Arr.value = randomMenu(2);
-
-    // isShowSecondMenu.value =!isShowSecondMenu.value
+    isShowThirdMenu.value = false;
+    menuLevel2.value = menuLevel2List.value.filter(item=>item.parentId===m.menuId)
   };
-
+  
   // 二级菜单
-  const secondMenuClick = () => {
+  const secondMenuClick = (m:Menu) => {
     if (isHide.value) {
       isShowFirstMenu.value = false;
       isShowSecondMenu.value = false;
     }
     isShowThirdMenu.value = true;
-    menu3Arr.value = randomMenu(3);
-    menu3ChildArr.value = randomMenu(4);
+    menuLevel3.value = menuLevel3List.value.filter(item=>item.parentId === m.menuId)
+    console.log("🚀 ~ file: menuHook.ts:90 ~ secondMenuClick ~ menuLevel3.value:", menuLevel3.value)
   };
 
   //选中
-  const selectClick = () => {
-    console.log("选中");
+  const selectClick = (m:Menu) => {
+    console.log("选中:",m);
     const nowTime = new Date();
     const countTime = (nowTime.getTime() - initTime.getTime()) / 1000;
     ElMessageBox.alert(`用时: ${countTime}秒`, "提示", {
@@ -101,5 +121,9 @@ export function useMenu() {
     secondMenuClick,
     selectClick,
     refreshStatus,
+    initMenu,
+    menuLevel1,
+    menuLevel2,
+    menuLevel3,
   };
 }
