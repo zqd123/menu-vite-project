@@ -21,7 +21,6 @@ export function useProcessData() {
    */
   async function readFile():Promise<string[]> {
     const {data} = await axios.get('/src/views/menu/stringData.txt')
-    console.log("🚀 ~ file: useProcessDataHook.ts:28 ~ readFile ~ str:", data)
     const strArr = data.split(/\n/).filter((item:string):boolean => item.trim() !== '');
     return strArr;
   }
@@ -41,7 +40,7 @@ export function useProcessData() {
    * @param {array} arr 数组
    * @param {number} num 获取数量
    */
-  function getRandomData(arr:Menu[], num:number = 5, { changeRemainMenu } = {changeRemainMenu:(arr: Menu[], result: Menu[])=>{}}) {
+  function getRandomData(arr:Menu[], num:number = 5, { onlySingle }:{onlySingle?:boolean}={}) {
     arr = JSON.parse(JSON.stringify(arr));
     const result:Menu[] = [];
     while (num > 0) {
@@ -59,7 +58,7 @@ export function useProcessData() {
         num++;
       }
     }
-    changeRemainMenu && changeRemainMenu(arr, result);
+    onlySingle && changeRemainMenu(arr, result);
     return result;
   }
   /**
@@ -97,7 +96,6 @@ export function useProcessData() {
     );
     menuTree.value = createMenuTree(menuLevel1, num);
   }
-  const levelCount = ref(3);
   /**
    * 生成树结构
    */
@@ -122,13 +120,13 @@ export function useProcessData() {
    * @param {array} 父级数组
    * @return {array} 当前层级数组
    */
-  function createLevelDataList(num:number,option:{parentList?:Menu[]}={}){
-    if (!option.parentList) {
-      return getRandomData(allMenu.value,num)
+  function createLevelDataList(num:number,{parentList,onlySingle}:{parentList?:Menu[],onlySingle?:boolean}={}){
+    if (!parentList) {
+      return getRandomData(remainMenu.value,num,{onlySingle})
     }
-    return option.parentList.reduce(
+    return parentList.reduce(
       (acc, item) => {
-        const _currentArr = getRandomData(allMenu.value, num).map((child) => {
+        const _currentArr = getRandomData(remainMenu.value, num,{onlySingle}).map((child) => {
           child.parentId = item.menuId;
           return child;
         });

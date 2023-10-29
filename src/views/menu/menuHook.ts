@@ -36,16 +36,17 @@ export function useMenu() {
   /**
    * 初始化菜单
    */
-  async function initMenu(everyLevelNum=5) {
+  async function initMenu(everyLevelNum=5,onlySingle=false) {
     allMenu.value = await mapData();
+    remainMenu.value = allMenu.value;// 剩余可选菜单数据,默认是全部数据
 
     menuLevel1List.value = createLevelDataList(everyLevelNum);
     menuLevel1.value = menuLevel1List.value;
-    menuLevel2List.value = createLevelDataList(everyLevelNum,{parentList:menuLevel1List.value});
+    menuLevel2List.value = createLevelDataList(everyLevelNum,{parentList:menuLevel1List.value,onlySingle});
     console.log("🚀 ~ file: menuHook.ts:46 ~ initMenu ~ menuLevel2List.value:", menuLevel2List.value)
-    const arr = createLevelDataList(everyLevelNum,{parentList:menuLevel2List.value});
+    const arr = createLevelDataList(everyLevelNum,{parentList:menuLevel2List.value,onlySingle});
     menuLevel3List.value= arr.map(item=>{
-      item.children=getRandomData(allMenu.value, everyLevelNum)
+      item.children=getRandomData(remainMenu.value, everyLevelNum)
       return item
     })
     console.log("🚀 ~ file: menuHook.ts:51 ~ initMenu ~ menuLevel3List.value:", menuLevel3List.value)

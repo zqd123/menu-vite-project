@@ -107,7 +107,7 @@ const {
 } = useMenu()
 
  onMounted(() => {
-  initMenu(5)
+  initMenu(9,true)
  })
 </script>
 <style scoped>
