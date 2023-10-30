@@ -1,5 +1,6 @@
 <template>
-  <OperateBars></OperateBars>
+  <OperateBars v-model:isGlobalColumn="isGlobalColumn"
+  v-model:isThirdColumn="isThirdColumn"></OperateBars>
   <div
     class="flex h-full w-full"
     :class="isGlobalColumn ? 'flex-col' : 'flex-row'"
@@ -14,7 +15,7 @@
           v-for="item in menuLevel1"
           :key="item.menuId"
           @click="firstMenuClick(item)"
-          class="w-32 font-bold min-w-max border border-blue-400 rounded-sm py-1 px-2"
+          class="w-32 font-bold min-w-max   rounded-sm py-1 px-2"
         >
           {{ item.menuName }}
         </div>
@@ -31,7 +32,7 @@
           v-for="item in menuLevel2"
           :key="item.menuId"
           @click="secondMenuClick(item)"
-          class="w-32 font-bold min-w-max border border-blue-400  rounded-sm py-1 px-2"
+          class="w-32 font-bold min-w-max    rounded-sm py-1 px-2"
         >
           {{ item.menuName }}
         </div>
@@ -50,7 +51,7 @@
           class="flex items-center gap-4"
           :class="!isThirdColumn ? 'flex-row' : 'flex-col'"
         >
-          <span class="font-bold w-32 border border-blue-400 rounded-sm py-1 px-2">{{
+          <span class="font-bold w-32   rounded-sm py-1 px-2">{{
             parent.menuName
           }}</span>
           <div
@@ -61,7 +62,7 @@
               v-for="child in parent.children"
               :key="child.menuId"
               @click="selectClick(child)"
-              class="w-32  min-w-max border border-blue-400 rounded-sm py-1 px-2"
+              class="w-32  min-w-max   rounded-sm py-1 px-2"
             >
               {{ child.menuName }}
             </div>
