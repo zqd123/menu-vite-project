@@ -1,6 +1,7 @@
 import { ElMessageBox } from "element-plus";
 import { computed, ref } from "vue";
 import { Menu, useProcessData } from "./useProcessDataHook";
+import Nprogress from '@/utils/progress'
 const {
   allMenu,
   remainMenu,
@@ -12,31 +13,30 @@ const {
   createLevelDataList,
 } = useProcessData();
 export function useMenu() {
-  const menu2Arr = ref<Menu[]>([]);
-  const menu3Arr = ref<Menu[]>([]);
-  const menu3ChildArr = ref<Menu[]>([]);
   const isHide = ref(false); // 展开下级菜单,隐藏上级菜单
   const isGlobalColumn = ref(false); // 菜单全局方向
   const isThirdColumn = ref(false); // 三级菜单方向
   const isShowFirstMenu = ref(true);
   const isShowSecondMenu = ref(false);
   const isShowThirdMenu = ref(false);
-
+  
   const menuLevel1List = ref<Menu[]>([]);
   const menuLevel2List = ref<Menu[]>([]);
   const menuLevel3List = ref<Menu[]>([]);
-
+  
   /**第一级菜单 */
   const menuLevel1 = ref<Menu[]>([]);
   /**第二级菜单 */
   const menuLevel2 = ref<Menu[]>([]);
   /**第三级菜单 */
   const menuLevel3 = ref<Menu[]>([]);
-
+  
   /**
    * 初始化菜单
-   */
-  async function initMenu(everyLevelNum=5,onlySingle=false) {
+  */
+ async function initMenu(everyLevelNum=5,onlySingle=false) {
+    Nprogress.start();
+
     allMenu.value = await mapData();
     remainMenu.value = allMenu.value;// 剩余可选菜单数据,默认是全部数据
 
@@ -49,6 +49,7 @@ export function useMenu() {
       item.children=getRandomData(remainMenu.value, everyLevelNum)
       return item
     })
+    Nprogress.done();
     console.log("🚀 ~ file: menuHook.ts:51 ~ initMenu ~ menuLevel3List.value:", menuLevel3List.value)
   }
   const thirdCenter = computed(() => {
@@ -108,9 +109,6 @@ export function useMenu() {
     isShowThirdMenu.value = false;
   };
   return {
-    menu2Arr,
-    menu3Arr,
-    menu3ChildArr,
     isHide,
     isGlobalColumn,
     isThirdColumn,

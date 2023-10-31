@@ -1,7 +1,7 @@
 <template>
     <div class="flex !absolute right-0 top-0">
       <el-switch
-        v-model="isHide"
+        v-model="_isHide"
         @change="refreshStatus"
         inline-prompt
         active-text="隐藏"
@@ -25,7 +25,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
-const emit = defineEmits(["update:isGlobalColumn","update:isThirdColumn"]);
+const emit = defineEmits(["update:isGlobalColumn","update:isThirdColumn","update:isHide"]);
 const props = defineProps({
   isGlobalColumn:{
     type:Boolean,
@@ -34,9 +34,13 @@ const props = defineProps({
   isThirdColumn:{
     type:Boolean,
     default:false
+  },
+  isHide:{
+    type:Boolean,
+    default:false
   }
 })
- const isHide = ref(false); // 展开下级菜单,隐藏上级菜单
+ const _isHide = ref(false); // 展开下级菜单,隐藏上级菜单
   const _isGlobalColumn = ref(props.isGlobalColumn); // 菜单全局方向
   const _isThirdColumn = ref(false); // 三级菜单方向
   const isShowFirstMenu = ref(true);
@@ -51,8 +55,9 @@ const props = defineProps({
   }
   //重置刷新
   const refreshStatus = () => {
-    isShowFirstMenu.value = true;
-    isShowSecondMenu.value = false;
-    isShowThirdMenu.value = false;
+    emit('update:isHide', _isHide.value)
+    // isShowFirstMenu.value = true;
+    // isShowSecondMenu.value = false;
+    // isShowThirdMenu.value = false;
   };
 </script>
