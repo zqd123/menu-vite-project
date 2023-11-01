@@ -1,9 +1,9 @@
 <template>
-  <OperateBars
+  <!-- <OperateBars
     v-model:isGlobalColumn="isGlobalColumn"
     v-model:isThirdColumn="isThirdColumn"
     v-model:isHide="isHide"
-  ></OperateBars>
+  ></OperateBars> -->
   <div
     class="flex h-full w-full"
     :class="isGlobalColumn ? 'flex-col' : 'flex-row'"
@@ -11,14 +11,14 @@
     <transition name="fade">
       <div
         v-show="isShowFirstMenu"
-        class="bg-[#324868] flex gap-4 p-4 text-white"
+        class="bg-[#324868] flex gap-1 text-white border-r border-solid border-[#e4e4e4]"
         :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
       >
         <div
           v-for="item in menuLevel1"
           :key="item.menuId"
           @click="firstMenuClick(item)"
-          class="w-32 font-bold min-w-max rounded-sm py-1 px-2"
+          class="w-32 font-bold min-w-max rounded-sm py-2 px-2"
         >
           {{ item.menuName }}
         </div>
@@ -28,14 +28,14 @@
     <transition name="fade">
       <div
         v-show="isShowSecondMenu"
-        class="bg-[#e2e0df] flex gap-4 p-4 text-black"
+        class="bg-[#e2e0df] flex gap-1 text-black border-r border-solid border-[#e4e4e4]"
         :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
       >
         <div
           v-for="item in menuLevel2"
           :key="item.menuId"
           @click="secondMenuClick(item)"
-          class="w-32 font-bold min-w-max rounded-sm py-1 px-2"
+          class="w-32 font-bold min-w-max rounded-sm py-2 px-2"
         >
           {{ item.menuName }}
         </div>
@@ -45,27 +45,27 @@
     <transition name="fade">
       <div
         v-show="isShowThirdMenu"
-        class="flex-1 bg-[#ffffff] flex gap-4 p-4 text-black"
+        class="flex-1 bg-[#ffffff] flex gap-1 text-black overflow-auto"
         :class="thirdCenter"
       >
         <div
           v-for="parent in menuLevel3"
           :key="parent.menuId"
-          class="flex items-center gap-4"
+          class="flex items-center gap-1 "
           :class="!isThirdColumn ? 'flex-row' : 'flex-col'"
         >
-          <span class="font-bold w-32 rounded-sm py-1 px-2">{{
+          <span class="font-bold w-32 rounded-sm py-2 px-2">{{
             parent.menuName
           }}</span>
           <div
-            class="flex gap-4"
+            class="flex gap-1"
             :class="!isThirdColumn ? 'flex-row' : 'flex-col'"
           >
             <div
               v-for="child in parent.children"
               :key="child.menuId"
               @click="selectClick(child)"
-              class="w-32 min-w-max rounded-sm py-1 px-2"
+              class="w-32 min-w-max rounded-sm py-2 px-2"
             >
               {{ child.menuName }}
             </div>
@@ -76,9 +76,11 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { RouteComponent, useRoute, useRouter } from "vue-router";
 import { useMenu } from "./menuHook";
 import OperateBars from "./OperateBars.vue";
 import { onMounted, ref, unref } from "vue";
+const route = useRoute()
 const {
   isHide,
   isGlobalColumn,
@@ -96,9 +98,16 @@ const {
   menuLevel2,
   menuLevel3,
 } = useMenu();
-
 onMounted(() => {
-  initMenu(5, true);
+  const {num=5,direction='row',thirdDirection='row',single="false"} = route.query
+  isGlobalColumn.value = direction === 'column'
+  isThirdColumn.value = thirdDirection === 'column'
+  const isSingle = single === 'true'
+  if (typeof num === 'string') {
+    initMenu(parseInt(num), true);
+  }else{
+    initMenu(5, true);
+  }
 });
 </script>
 <style scoped>

@@ -1,10 +1,10 @@
 import router from "./index";
-import Nprogress from "../utils/progress";
+import NProgress from "../utils/progress";
 
 /**前置守卫 */
 router.beforeEach((to, from) => {
   // console.log({ to, from });
-  Nprogress.start();
+  NProgress.start();
   return true
   // if (
   //   to.path.includes("/seconde") &&
@@ -24,6 +24,6 @@ router.beforeEach((to, from) => {
 });
 /**后置守卫 */
 router.afterEach((to, from) => {
-  Nprogress.done();
+  NProgress.done();
   // console.log({ to, from });
 });

@@ -1,7 +1,7 @@
 import { ElMessageBox } from "element-plus";
 import { computed, ref } from "vue";
 import { Menu, useProcessData } from "./useProcessDataHook";
-import Nprogress from '@/utils/progress'
+import NProgress from '@/utils/progress'
 const {
   allMenu,
   remainMenu,
@@ -31,11 +31,13 @@ export function useMenu() {
   /**第三级菜单 */
   const menuLevel3 = ref<Menu[]>([]);
   
-  /**
-   * 初始化菜单
+ /**
+  * 初始化菜单
+  * @param {5|9|13} everyLevelNum 菜单数量
+  * @param {boolean}onlySingle 是否不重复
   */
  async function initMenu(everyLevelNum=5,onlySingle=false) {
-    Nprogress.start();
+    NProgress.start();
 
     allMenu.value = await mapData();
     remainMenu.value = allMenu.value;// 剩余可选菜单数据,默认是全部数据
@@ -49,7 +51,7 @@ export function useMenu() {
       item.children=getRandomData(remainMenu.value, everyLevelNum)
       return item
     })
-    Nprogress.done();
+    NProgress.done();
     console.log("🚀 ~ file: menuHook.ts:51 ~ initMenu ~ menuLevel3List.value:", menuLevel3List.value)
   }
   const thirdCenter = computed(() => {
