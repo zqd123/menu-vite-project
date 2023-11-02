@@ -20,7 +20,7 @@ export function useProcessData() {
    * @returns {array} 菜单字符串数组
    */
   async function readFile():Promise<string[]> {
-    const {data} = await axios.get('/src/views/menu/stringData.txt')
+    const {data} = await axios.get('src/assets/stringData.txt')
     const strArr = data.split(/\n/).filter((item:string):boolean => item.trim() !== '');
     return strArr;
   }
