@@ -1,6 +1,7 @@
 
 import axios from "axios";
 import { ref } from "vue";
+import stringData from '/src/assets/stringData.txt'
  export interface Menu {
   menuId: string;
   menuName: string;
@@ -20,7 +21,8 @@ export function useProcessData() {
    * @returns {array} 菜单字符串数组
    */
   async function readFile():Promise<string[]> {
-    const {data} = await axios.get('src/assets/stringData.txt')
+    const {data} = await axios.get(stringData)
+    // const data = stringData
     const strArr = data.split(/\n/).filter((item:string):boolean => item.trim() !== '');
     return strArr;
   }
