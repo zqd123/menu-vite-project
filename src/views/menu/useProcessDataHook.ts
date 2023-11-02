@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import { ref } from "vue";
-import stringData from '/src/assets/stringData.txt'
+import stringData from './stringData.txt'
  export interface Menu {
   menuId: string;
   menuName: string;
