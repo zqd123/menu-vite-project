@@ -99,9 +99,10 @@ const {
   menuLevel3,
 } = useMenu();
 onMounted(() => {
-  const {num=5,direction='row',thirdDirection='row',single="false"} = route.query
+  const {num=5,hide='false',direction='row',thirdDirection='row',single="false"} = route.query
   isGlobalColumn.value = direction === 'column'
   isThirdColumn.value = thirdDirection === 'column'
+  isHide.value = hide === 'true'
   const isSingle = single === 'true'
   if (typeof num === 'string') {
     initMenu(parseInt(num), true);
