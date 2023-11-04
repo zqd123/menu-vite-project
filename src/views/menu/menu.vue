@@ -27,7 +27,6 @@
 
     <transition name="fade">
       <div
-        v-show="isShowSecondMenu"
         class="bg-[#e2e0df] flex gap-1 text-black border-r border-solid border-[#e4e4e4]"
         :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
       >

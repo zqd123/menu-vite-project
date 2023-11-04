@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import { ref } from "vue";
-import stringData from './stringData1.png'
+import stringData from './stringData.png'
  export interface Menu {
   menuId: string;
   menuName: string;
