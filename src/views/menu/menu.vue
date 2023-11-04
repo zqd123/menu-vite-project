@@ -11,8 +11,8 @@
     <transition name="fade">
       <div
         v-show="isShowFirstMenu"
-        class="bg-[#324868] flex gap-1 text-white border-r border-solid border-[#e4e4e4]"
-        :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
+        class="bg-[#324868] flex gap-1 text-white border-solid border-[#e4e4e4]"
+        :class="!isGlobalColumn ? 'flex-col border-r' : 'flex-row justify-center border-b'"
       >
         <div
           v-for="item in menuLevel1"
@@ -27,8 +27,8 @@
 
     <transition name="fade">
       <div
-        class="bg-[#e2e0df] flex gap-1 text-black border-r border-solid border-[#e4e4e4]"
-        :class="!isGlobalColumn ? 'flex-col' : 'flex-row justify-center'"
+        class="bg-[#e2e0df] flex gap-1 text-black border-solid border-[#e4e4e4]"
+        :class="!isGlobalColumn ? 'flex-col border-r' : 'flex-row justify-center border-b'"
       >
         <div
           v-for="item in menuLevel2"

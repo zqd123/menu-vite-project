@@ -95,14 +95,14 @@ export function useMenu() {
   //选中
   const selectClick = (m:Menu) => {
     console.log("选中:",m);
-    const nowTime = new Date();
-    const countTime = (nowTime.getTime() - initTime.getTime()) / 1000;
-    ElMessageBox.alert(`用时: ${countTime}秒`, "提示", {
-      confirmButtonText: "确定",
-      callback: () => {
-        refreshStatus();
-      },
-    });
+    // const nowTime = new Date();
+    // const countTime = (nowTime.getTime() - initTime.getTime()) / 1000;
+    // ElMessageBox.alert(`用时: ${countTime}秒`, "提示", {
+    //   confirmButtonText: "确定",
+    //   callback: () => {
+    //     refreshStatus();
+    //   },
+    // });
   };
   //重置刷新
   const refreshStatus = () => {
