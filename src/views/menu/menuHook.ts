@@ -2,6 +2,10 @@ import { ElMessageBox } from "element-plus";
 import { computed, ref } from "vue";
 import { Menu, useProcessData } from "./useProcessDataHook";
 import NProgress from '@/utils/progress'
+import {useQuestionHook} from './questionHook'
+const {generateFirstTypeList} = useQuestionHook()
+const firstTypeList = generateFirstTypeList();
+console.log("🚀 ~ file: questionHook.ts:28 ~ firstTypeList:", firstTypeList)
 const {
   allMenu,
   remainMenu,
