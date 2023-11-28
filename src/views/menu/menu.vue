@@ -79,6 +79,7 @@ import { RouteComponent, useRoute, useRouter } from "vue-router";
 import { useMenu } from "./menuHook";
 import OperateBars from "./OperateBars.vue";
 import { onMounted, ref, unref } from "vue";
+import {useQuestionHook} from './questionHook'
 const route = useRoute()
 const {
   isHide,
@@ -96,19 +97,32 @@ const {
   menuLevel1,
   menuLevel2,
   menuLevel3,
+  menuLevel1List,
+  menuLevel2List,
+  menuLevel3List,
 } = useMenu();
-onMounted(() => {
-  const {num=5,hide='false',direction='row',thirdDirection='row',single="false"} = route.query
-  isGlobalColumn.value = direction === 'column'
-  isThirdColumn.value = thirdDirection === 'column'
-  isHide.value = hide === 'true'
-  const isSingle = single === 'true'
-  if (typeof num === 'string') {
-    initMenu(parseInt(num), true);
-  }else{
-    initMenu(5, true);
-  }
-});
+
+const {createMenuTypeList,createQuestionList} = useQuestionHook()
+const arr = createMenuTypeList()
+console.log("🚀 ~ file: menu.vue:103 ~ arr:", arr)
+async function initShowMenu({num=5}={}){
+  await initMenu(num)
+  createQuestionList({level1List:menuLevel1List.value,level2List:menuLevel2List.value,level3List:menuLevel3List.value})
+
+}
+initShowMenu({num:5})
+// onMounted(() => {
+//   const {num=5,hide='false',direction='row',thirdDirection='row',single="false"} = route.query
+//   isGlobalColumn.value = direction === 'column'
+//   isThirdColumn.value = thirdDirection === 'column'
+//   isHide.value = hide === 'true'
+//   const isSingle = single === 'true'
+//   if (typeof num === 'string') {
+//     initMenu(parseInt(num), true);
+//   }else{
+//     initMenu(5, true);
+//   }
+// });
 </script>
 <style scoped>
 .fade-enter-active,

@@ -1,11 +1,8 @@
 import { ElMessageBox } from "element-plus";
 import { computed, ref } from "vue";
 import { Menu, useProcessData } from "./useProcessDataHook";
-import NProgress from '@/utils/progress'
-import {useQuestionHook} from './questionHook'
-const {generateFirstTypeList} = useQuestionHook()
-const firstTypeList = generateFirstTypeList();
-console.log("🚀 ~ file: questionHook.ts:28 ~ firstTypeList:", firstTypeList)
+import NProgress from "@/utils/progress";
+import { useQuestionHook } from "./questionHook";
 const {
   allMenu,
   remainMenu,
@@ -23,40 +20,56 @@ export function useMenu() {
   const isShowFirstMenu = ref(true);
   const isShowSecondMenu = ref(false);
   const isShowThirdMenu = ref(false);
-  
+
   const menuLevel1List = ref<Menu[]>([]);
   const menuLevel2List = ref<Menu[]>([]);
   const menuLevel3List = ref<Menu[]>([]);
-  
+
   /**第一级菜单 */
   const menuLevel1 = ref<Menu[]>([]);
   /**第二级菜单 */
   const menuLevel2 = ref<Menu[]>([]);
   /**第三级菜单 */
   const menuLevel3 = ref<Menu[]>([]);
-  
- /**
-  * 初始化菜单
-  * @param {5|9|13} everyLevelNum 菜单数量
-  * @param {boolean}onlySingle 是否不重复
-  */
- async function initMenu(everyLevelNum=5,onlySingle=false) {
+
+  /**
+   * 初始化菜单
+   * @param {5|9|13} everyLevelNum 菜单数量
+   * @param {boolean}onlySingle 是否不重复
+   */
+  async function initMenu(everyLevelNum = 5, onlySingle = false) {
     NProgress.start();
 
     allMenu.value = await mapData();
-    remainMenu.value = allMenu.value;// 剩余可选菜单数据,默认是全部数据
+    remainMenu.value = allMenu.value; // 剩余可选菜单数据,默认是全部数据
 
     menuLevel1List.value = createLevelDataList(everyLevelNum);
+    console.log(
+      "🚀 ~ file: menuHook.ts:47 ~ initMenu ~ menuLevel1List.value:",
+      menuLevel1List.value
+    );
     menuLevel1.value = menuLevel1List.value;
-    menuLevel2List.value = createLevelDataList(everyLevelNum,{parentList:menuLevel1List.value,onlySingle});
-    console.log("🚀 ~ file: menuHook.ts:46 ~ initMenu ~ menuLevel2List.value:", menuLevel2List.value)
-    const arr = createLevelDataList(everyLevelNum,{parentList:menuLevel2List.value,onlySingle});
-    menuLevel3List.value= arr.map(item=>{
-      item.children=getRandomData(remainMenu.value, everyLevelNum)
-      return item
-    })
+    menuLevel2List.value = createLevelDataList(everyLevelNum, {
+      parentList: menuLevel1List.value,
+      onlySingle,
+    });
+    console.log(
+      "🚀 ~ file: menuHook.ts:46 ~ initMenu ~ menuLevel2List.value:",
+      menuLevel2List.value
+    );
+    const arr = createLevelDataList(everyLevelNum, {
+      parentList: menuLevel2List.value,
+      onlySingle,
+    });
+    menuLevel3List.value = arr.map((item) => {
+      item.children = getRandomData(remainMenu.value, everyLevelNum);
+      return item;
+    });
     NProgress.done();
-    console.log("🚀 ~ file: menuHook.ts:51 ~ initMenu ~ menuLevel3List.value:", menuLevel3List.value)
+    console.log(
+      "🚀 ~ file: menuHook.ts:51 ~ initMenu ~ menuLevel3List.value:",
+      menuLevel3List.value
+    );
   }
   const thirdCenter = computed(() => {
     if (isThirdColumn.value) {
@@ -75,30 +88,37 @@ export function useMenu() {
   const initTime = new Date(); // 初始时间
 
   //一级菜单
-  const firstMenuClick = (m:Menu) => {
+  const firstMenuClick = (m: Menu) => {
     console.log("一级菜单点击");
     if (isHide.value) {
       isShowFirstMenu.value = false;
     }
     isShowSecondMenu.value = true;
     isShowThirdMenu.value = false;
-    menuLevel2.value = menuLevel2List.value.filter(item=>item.parentId===m.menuId)
+    menuLevel2.value = menuLevel2List.value.filter(
+      (item) => item.parentId === m.menuId
+    );
   };
-  
+
   // 二级菜单
-  const secondMenuClick = (m:Menu) => {
+  const secondMenuClick = (m: Menu) => {
     if (isHide.value) {
       isShowFirstMenu.value = false;
       isShowSecondMenu.value = false;
     }
     isShowThirdMenu.value = true;
-    menuLevel3.value = menuLevel3List.value.filter(item=>item.parentId === m.menuId)
-    console.log("🚀 ~ file: menuHook.ts:90 ~ secondMenuClick ~ menuLevel3.value:", menuLevel3.value)
+    menuLevel3.value = menuLevel3List.value.filter(
+      (item) => item.parentId === m.menuId
+    );
+    console.log(
+      "🚀 ~ file: menuHook.ts:90 ~ secondMenuClick ~ menuLevel3.value:",
+      menuLevel3.value
+    );
   };
 
   //选中
-  const selectClick = (m:Menu) => {
-    console.log("选中:",m);
+  const selectClick = (m: Menu) => {
+    console.log("选中:", m);
     // const nowTime = new Date();
     // const countTime = (nowTime.getTime() - initTime.getTime()) / 1000;
     // ElMessageBox.alert(`用时: ${countTime}秒`, "提示", {
@@ -130,5 +150,8 @@ export function useMenu() {
     menuLevel1,
     menuLevel2,
     menuLevel3,
+    menuLevel1List,
+    menuLevel2List,
+    menuLevel3List,
   };
 }
