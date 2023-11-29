@@ -55,21 +55,52 @@ export function useQuestionHook() {
     return arr[Math.floor(Math.random() * arr.length)];
   }
   /**
+   * 随机获取当前菜单中某线4级名称
+   */
+  function getLevelNameObj({level1List,level2List,level3List}:{level1List:Menu[],level2List:Menu[],level3List:Menu[]}){
+    const levelObj:Menu = getRandom(level1List)
+     const level1Name = levelObj.menuName
+     const level2ListByLevel1Obj = level2List.filter(item=>item.parentId===levelObj.menuId)
+     const level2Obj:Menu =  getRandom(level2ListByLevel1Obj)
+     const level2Name = level2Obj.menuName
+     const level3ListByLevel2Obj = level3List.filter(item=>item.parentId===level2Obj.menuId)
+     const level3Obj:Menu = getRandom(level3ListByLevel2Obj)
+     const level3Name = level3Obj.menuName
+     const level4Obj:Menu = getRandom(level3Obj.children??[])
+     const level4Name = level4Obj.menuName
+     console.log(level1Name,level2Name,level3Name,level4Name);
+     
+     return {level1Name,level2Name,level3Name,level4Name}
+  }
+  /**
+   * 概率函数
+   * @param num 百分比值
+   * @returns 
+   */
+  function chanceBoolean(num:number=50) {
+    return Math.random() < num / 100;
+  }
+  /**
+   * 生成指定数量的数组
+   * @param param0 
+   */
+  function arrayByNum({level1List,level2List,level3List,questionNumber}:{level1List:Menu[],level2List:Menu[],level3List:Menu[],questionNumber:number}){
+    const arr = []
+    for(let i=0;i<questionNumber;i++){
+      arr.push(getLevelNameObj({level1List,level2List,level3List}))
+    }
+    return arr
+  }
+  
+  /**
    * 生成问题
    */
-  function createQuestionList({level1List,level2List,level3List}:{level1List:Menu[],level2List:Menu[],level3List:Menu[]}) {
-     const levelObj:Menu = getRandom(level1List)
-     const level1Name = levelObj.menuName
-     const level2Obj:Menu = level2List.find(item=>item.parentId===levelObj.menuId) ??
-       level2List[0]
-     const level2Name = level2Obj.menuName
-     const level3Obj:Menu = level3List.find(item=>item.parentId===level2Obj.menuId) ??
-       level3List[0]
-     const level3Name = level3Obj.menuName
-     const level4Name = level3Obj.children && level3Obj.children[0].menuName
-    console.log(level1Name,level2Name,level3Name,level4Name);
-    
-    return  `该页面中节点A与节点B是否属于父子关系（第一层级和第二层级） 是/否`
+  function createQuestionList({level1List,level2List,level3List,questionNumber=100,falsePercent=50}:{level1List:Menu[],level2List:Menu[],level3List:Menu[],questionNumber:number,falsePercent:number}) {
+     const allList = arrayByNum({level1List,level2List,level3List,questionNumber})
+    const falseNum = allList.length * falsePercent / 100
+     console.log("🚀 ~ file: questionHook.ts:100 ~ createQuestionList ~ falseNum:", falseNum)
+     const bool = chanceBoolean()
+     return 
   }
   function arrayRepeat(arr: TypeRandom[], num: number) {
     let newArr: TypeRandom[] = [];
