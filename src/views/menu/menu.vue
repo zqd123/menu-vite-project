@@ -72,6 +72,7 @@
         </div>
       </div>
     </transition>
+    <QuestionDialog :questionStrList="questionStrList"></QuestionDialog>
   </div>
 </template>
 <script lang="ts" setup>
@@ -80,6 +81,7 @@ import { useMenu } from "./menuHook";
 import OperateBars from "./OperateBars.vue";
 import { onMounted, ref, unref } from "vue";
 import {useQuestionHook} from './questionHook'
+import QuestionDialog from "./QuestionDialog.vue";
 const route = useRoute()
 const {
   isHide,
@@ -102,7 +104,7 @@ const {
   menuLevel3List,
 } = useMenu();
 
-const {createMenuTypeList,createQuestionList} = useQuestionHook()
+const {createMenuTypeList,createQuestionList,questionStrList} = useQuestionHook()
 const arr = createMenuTypeList()
 console.log("🚀 ~ file: menu.vue:103 ~ arr:", arr)
 async function initShowMenu({num=5}={}){

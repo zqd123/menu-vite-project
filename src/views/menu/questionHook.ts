@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import { Menu } from "./useProcessDataHook";
 type vh = "column" | "row";
 interface TypeRandom {
@@ -7,8 +8,28 @@ interface TypeRandom {
   globDirection: vh;
   isFirstShow: boolean;
 }
+interface LevelNameObject {
+  level1Name: string;
+  level2Name: string;
+  level3Name: string;
+  level4Name: string;
+  menuItemNum?: number;
+}
+type nameKey = keyof LevelNameObject;
+
+interface Question {
+  id?: number;
+  question: LevelNameObject;
+  isTrue: boolean;
+}
+export interface QuestionStr {
+  questionStr: string;
+  isTrue: boolean;
+}
 type QuestionType = "type1" | "type2" | "type3";
 export function useQuestionHook() {
+  //最终要展示的问题
+  const questionStrList = ref<QuestionStr[]>([]);
   const gTypes: vh[] = ["column", "row"];
   const nums = [5, 7, 9];
   const sTypes: vh[] = ["column", "row"];
@@ -37,20 +58,6 @@ export function useQuestionHook() {
       item.id = index + 1;
     });
     return arr;
-  }
-  interface LevelNameObject {
-    level1Name: string;
-    level2Name: string;
-    level3Name: string;
-    level4Name: string;
-    menuItemNum?: number;
-  }
-  type nameKey = keyof LevelNameObject;
-
-  interface Question {
-    id?: number;
-    question: LevelNameObject;
-    isTrue: boolean;
   }
 
   /**
@@ -120,16 +127,16 @@ export function useQuestionHook() {
   }
   /**
    * 获取数组中不等于trueName的任意值
-   * @param levelList 
-   * @param trueName 
+   * @param levelList
+   * @param trueName
    */
-  function randomMenuByLevelList(levelList: Menu[],trueName:string) {
+  function randomMenuByLevelList(levelList: Menu[], trueName: string) {
     const randomIndex = Math.floor(Math.random() * levelList.length);
     const randomMenu = levelList[randomIndex];
     if (randomMenu.menuName !== trueName) {
       return randomMenu.menuName;
     } else {
-      return randomMenuByLevelList(levelList,trueName);
+      return randomMenuByLevelList(levelList, trueName);
     }
   }
   /**
@@ -143,13 +150,17 @@ export function useQuestionHook() {
     level3List: Menu[],
     questionType: QuestionType
   ) {
-    const keyArr: nameKey[] = [
-      "level1Name",
-      "level2Name",
-      "level3Name",
-      "level4Name",
-    ];
-    const questionList:Question[] = allList.map(item=>({question:item,isTrue:true}));
+    let keyArr: nameKey[] = [];
+    if (questionType === "type1") {
+      keyArr = ["level1Name", "level2Name"];
+    } else if (questionType === "type2") {
+      keyArr = ["level1Name", "level2Name", "level3Name", "level4Name"];
+    }
+
+    const questionList: Question[] = allList.map((item) => ({
+      question: item,
+      isTrue: true,
+    }));
     // const questionList:Question[] = [];
 
     const randomIndexList: number[] = [];
@@ -159,24 +170,60 @@ export function useQuestionHook() {
         randomIndexList.push(randomIndex);
       }
     }
-    questionList.forEach(item=>{
-      randomIndexList.forEach(index=>{
+    questionList.forEach((item) => {
+      randomIndexList.forEach((index) => {
         const randomKey = keyArr[Math.floor(Math.random() * keyArr.length)];
         if (randomKey === "level1Name") {
-          questionList[index].question.level1Name =  randomMenuByLevelList(level1List, item.question.level1Name)
-        }else if (randomKey === "level2Name") {
-          questionList[index].question.level2Name =  randomMenuByLevelList(level2List, item.question.level2Name)
-        }else if (randomKey === 'level3Name') {
-          questionList[index].question.level3Name =  randomMenuByLevelList(level3List, item.question.level3Name)
-        }else if (randomKey === 'level4Name') {
-          const otherList = level3List.filter(l3=>l3.menuName!==item.question.level3Name);
+          questionList[index].question.level1Name = randomMenuByLevelList(
+            level1List,
+            item.question.level1Name
+          );
+        } else if (randomKey === "level2Name") {
+          questionList[index].question.level2Name = randomMenuByLevelList(
+            level2List,
+            item.question.level2Name
+          );
+        } else if (randomKey === "level3Name") {
+          questionList[index].question.level3Name = randomMenuByLevelList(
+            level3List,
+            item.question.level3Name
+          );
+        } else if (randomKey === "level4Name") {
+          const otherList = level3List.filter(
+            (l3) => l3.menuName !== item.question.level3Name
+          );
           const random = Math.floor(Math.random() * otherList.length);
-          questionList[index].question.level4Name =  randomMenuByLevelList(otherList[random].children!, item.question.level4Name)
+          questionList[index].question.level4Name = randomMenuByLevelList(
+            otherList[random].children!,
+            item.question.level4Name
+          );
         }
         questionList[index].isTrue = false;
-      })
-    })
+      });
+    });
     return questionList;
+  }
+  function createQuestionStr(
+    questionList: Question[],
+    questionType: QuestionType
+  ) {
+    const strList: QuestionStr[] = [];
+    if (questionType === "type1") {
+      questionList.forEach((item) => {
+        strList.push({
+          questionStr: `该页面中节点${item.question.level1Name}与节点${item.question.level1Name}是否属于父子关系`,
+          isTrue: item.isTrue,
+        });
+      });
+    } else if (questionType === "type2") {
+      questionList.forEach((item) => {
+        strList.push({
+          questionStr: `该页面中节点${item.question.level1Name}-${item.question.level2Name}-${item.question.level3Name}-${item.question.level4Name}否正确`,
+          isTrue: item.isTrue,
+        });
+      });
+    }
+    return strList;
   }
   /**
    * 生成问题
@@ -192,9 +239,9 @@ export function useQuestionHook() {
     level1List: Menu[];
     level2List: Menu[];
     level3List: Menu[];
-    questionNumber: number;
-    questionType: QuestionType;
-    falsePercent: number;
+    questionNumber?: number;
+    questionType?: QuestionType;
+    falsePercent?: number;
   }) {
     const allList = arrayByNum({
       level1List,
@@ -203,9 +250,24 @@ export function useQuestionHook() {
       questionNumber,
     });
     const falseNum = (allList.length * falsePercent) / 100;
-    console.log("🚀 ~ file: questionHook.ts:206 ~ useQuestionHook ~ falseNum:", falseNum)
-    const res = createQuestion(allList,falseNum,level1List,level2List,level3List,questionType)
-    console.log("🚀 ~ file: questionHook.ts:207 ~ useQuestionHook ~ res:", res)
+    console.log(
+      "🚀 ~ file: questionHook.ts:206 ~ useQuestionHook ~ falseNum:",
+      falseNum
+    );
+    const res = createQuestion(
+      allList,
+      falseNum,
+      level1List,
+      level2List,
+      level3List,
+      questionType
+    );
+    console.log("🚀 ~ file: questionHook.ts:207 ~ useQuestionHook ~ res:", res);
+    questionStrList.value = createQuestionStr(res, questionType);
+    console.log(
+      "🚀 ~ file: questionHook.ts:238 ~ useQuestionHook ~ questionStrList:",
+      questionStrList
+    );
     const bool = chanceBoolean();
     return;
   }
@@ -236,5 +298,6 @@ export function useQuestionHook() {
     createMenuTypeList,
     createQuestionList,
     generateFirstTypeList,
+    questionStrList,
   };
 }
