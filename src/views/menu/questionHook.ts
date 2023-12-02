@@ -23,10 +23,11 @@ interface Question {
   isTrue: boolean;
 }
 export interface QuestionStr {
+  questionType: QuestionType;
   questionStr: string;
   isTrue: boolean;
 }
-type QuestionType = "type1" | "type2" | "type3";
+export type QuestionType = "type1" | "type2" | "type3";
 export function useQuestionHook() {
   //最终要展示的问题
   const questionStrList = ref<QuestionStr[]>([]);
@@ -211,13 +212,15 @@ export function useQuestionHook() {
     if (questionType === "type1") {
       questionList.forEach((item) => {
         strList.push({
-          questionStr: `该页面中节点${item.question.level1Name}与节点${item.question.level1Name}是否属于父子关系`,
+          questionType,
+          questionStr: `该页面中节点${item.question.level1Name}与节点${item.question.level2Name}是否属于父子关系`,
           isTrue: item.isTrue,
         });
       });
     } else if (questionType === "type2") {
       questionList.forEach((item) => {
         strList.push({
+          questionType,
           questionStr: `该页面中节点${item.question.level1Name}-${item.question.level2Name}-${item.question.level3Name}-${item.question.level4Name}否正确`,
           isTrue: item.isTrue,
         });

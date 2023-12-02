@@ -72,7 +72,7 @@
         </div>
       </div>
     </transition>
-    <QuestionDialog :questionStrList="questionStrList"></QuestionDialog>
+    <QuestionDialog v-if="isShowDialog" :questionStrList="questionStrList"></QuestionDialog>
   </div>
 </template>
 <script lang="ts" setup>
@@ -105,12 +105,13 @@ const {
 } = useMenu();
 
 const {createMenuTypeList,createQuestionList,questionStrList} = useQuestionHook()
+const isShowDialog = ref(false)
 const arr = createMenuTypeList()
 console.log("🚀 ~ file: menu.vue:103 ~ arr:", arr)
 async function initShowMenu({num=5}={}){
   await initMenu(num)
   createQuestionList({level1List:menuLevel1List.value,level2List:menuLevel2List.value,level3List:menuLevel3List.value})
-
+isShowDialog.value = true
 }
 initShowMenu({num:5})
 // onMounted(() => {
