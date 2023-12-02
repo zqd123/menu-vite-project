@@ -1,0 +1,90 @@
+{
+    "root": {
+        "data": {
+            "id": "cxdqpcyz3co0",
+            "created": 1701509290263,
+            "text": "流程"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "cxdqpv8jb680",
+                    "created": 1701509330024,
+                    "text": "登录"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cxdqq4gt31k0",
+                            "created": 1701509350115,
+                            "text": "用户信息保存到storage中"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cxdqq0yvl480",
+                    "created": 1701509342500,
+                    "text": "开始实验"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cxdqr8k6t880",
+                            "created": 1701509437391,
+                            "text": "全局横向"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cxdqu0v2qo00",
+                                    "created": 1701509655727,
+                                    "text": "类型一"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cxdqu5cuns80",
+                                    "created": 1701509665509,
+                                    "text": "类型二+三"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cxdqtzitn200",
+                            "created": 1701509652809,
+                            "text": "全局纵向"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cxdqujc7q280",
+                                    "created": 1701509695945,
+                                    "text": "类型一"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cxdquldcx4w0",
+                                    "created": 1701509700368,
+                                    "text": "类型二+三"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "filetree",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

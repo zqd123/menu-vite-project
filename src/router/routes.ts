@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from "vue-router";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    redirect: "first",
+    redirect: "/menu",
   },
   {
     path: "/admin",
@@ -10,21 +10,32 @@ const routes: RouteRecordRaw[] = [
     component: () => import("../views/admin/admin.vue"),
   },
   {
+    path: "/menu",
+    name: "menu",
+    redirect: "/menu/login",
+    children: [
+      {
+        path: "login",
+        name: "menuLogin",
+        component: () => import("../views/menu/Login.vue"),
+      },
+      {
+        path: "menu-test/:globDirection/:type",
+        name: "menu-test",
+        component: () => import("../views/menu/menu.vue")
+      },
+    ],
+  },
+  {
     path: "/first",
-    name: "home",
-    redirect: "/first/menu",
+    name: "first",
+    redirect: "/first/login",
     children: [
       {
         path: "login",
         name: "firstLogin",
         component: () => import("../views/first-test/Login.vue"),
       },
-      {
-        path: "menu",
-        name: "menu",
-        component: () => import("../views/menu/menu.vue"),
-      },
-      
     ],
   },
   {

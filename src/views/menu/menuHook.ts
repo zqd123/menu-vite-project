@@ -1,7 +1,7 @@
 import { ElMessageBox } from "element-plus";
 import { computed, ref } from "vue";
 import { Menu, useProcessData } from "./useProcessDataHook";
-import NProgress from "@/utils/progress";
+import NProgress from "../../utils/progress";
 import { useQuestionHook } from "./questionHook";
 const {
   allMenu,
@@ -104,7 +104,7 @@ export function useMenu() {
   const secondMenuClick = (m: Menu) => {
     if (isHide.value) {
       isShowFirstMenu.value = false;
-      isShowSecondMenu.value = false;
+      // isShowSecondMenu.value = false;
     }
     isShowThirdMenu.value = true;
     menuLevel3.value = menuLevel3List.value.filter(

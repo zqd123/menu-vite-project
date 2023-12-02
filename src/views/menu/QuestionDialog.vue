@@ -25,6 +25,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { QuestionStr,QuestionType } from "./questionHook";
+const emit = defineEmits(['refreshMenu']);
 const props = defineProps<{
   questionStrList: QuestionStr[];
 }>();
@@ -32,9 +33,12 @@ const answerValue = ref<number>(0);
 const questionIndex = ref<number>(0);
 const currentQuestion = ref<QuestionStr>();
 const answerList = ref<AnswerItem[]>([])
+const startTime = ref<number>(0);
+const endTime = ref<number>(0);
 watch(
   questionIndex,
   (v) => {
+    startTime.value = Date.now();
     return (currentQuestion.value = props.questionStrList[v]);
   },
   { immediate: true }
@@ -53,22 +57,43 @@ interface AnswerItem {
   isAnswerTrue?:boolean,
   times?:string,
 }
-// const questionStr = computed(() => props.questionStrList[questionIndex.value].questionStr)
+/**
+ * 选择答案
+ */
 function selectHandle() {
-  console.log(answerValue.value);
+  endTime.value = Date.now();
+  const times = (endTime.value - startTime.value)/1000
+  const fixedTimes = times.toFixed(2);
   const bool = answerValue.value === 1  
   const isAnswerTrue = bool === currentQuestion.value?.isTrue
-  answerList.value.push({
+  const answerItem = {
     questionType: currentQuestion.value?.questionType,
     isAnswerTrue: isAnswerTrue,
-    times: new Date().toLocaleString()
-  })
+    times: fixedTimes
+  }
+  answerList.value.push(answerItem)
   saveStore(answerList.value)
-  questionIndex.value++;
-  answerValue.value = 0;
+  if (questionIndex.value === props.questionStrList.length - 1) {
+    emit('refreshMenu')
+  }else{
+    questionIndex.value++;
+    answerValue.value = 0;
+  }
 }
-function saveStore(question:AnswerItem[]){
-  sessionStorage.setItem('question', JSON.stringify(question))
+/**
+ * 保存到storage中
+ * @param answer 答案 
+ */
+function saveStore(answer:AnswerItem[]){
+  //获取sessionStorage中已保存的数据
+  const answerStr = sessionStorage.getItem('answer')
+  if (answerStr) {
+    const answerList = JSON.parse(answerStr)
+    answerList.push(...answer)
+    sessionStorage.setItem('answer', JSON.stringify(answerList))
+  }else{
+    sessionStorage.setItem('answer', JSON.stringify(answer))
+  }
 }
 nextTick(() => {
    // 把弹窗父亲的父亲 dom 元素添加 pointer-events: none; 防止穿透
@@ -82,8 +107,6 @@ nextTick(() => {
     pointer-events: auto;
     border: 1px solid #c7bfbf;
     border-radius: 10px;
-    /* padding: 0;
-    margin: 0; */
   }
   .dialog-question .el-dialog__body {
     padding: 0 10px;

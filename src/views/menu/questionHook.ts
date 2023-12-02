@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { Menu } from "./useProcessDataHook";
-type vh = "column" | "row";
-interface TypeRandom {
+export type vh = "column" | "row";
+export interface MenuType {
   id?: number;
   num: number;
   thirdDirection: vh;
@@ -35,14 +35,27 @@ export function useQuestionHook() {
   const nums = [5, 7, 9];
   const sTypes: vh[] = ["column", "row"];
   const isB = [false, true];
-
+/**
+ * 将12种菜单数组中的数据随机打乱
+ * @param menuTypeList 菜单类型数据
+ * @param globDirection 主体方向
+ */
+  function generateRandomMenuTypeList(menuTypeList: MenuType[], globDirection: vh){
+    const newMenuTypeList = [...menuTypeList];
+    const newArr = [];
+    while (newMenuTypeList.length) {
+      const index = Math.floor(Math.random() * newMenuTypeList.length);
+      newArr.push(newMenuTypeList.splice(index, 1)[0]);
+    }
+    return newArr;
+  }
   /**
    * 生成12种菜单
    * @param globDirection 全局方向
    * @returns
    */
   function createMenuTypeList(globDirection: vh = "column") {
-    const arr: TypeRandom[] = [];
+    const arr: MenuType[] = [];
     gTypes.forEach((item, index) => {
       nums.forEach((item2, index2) => {
         isB.forEach((item3, index3) => {
@@ -58,7 +71,8 @@ export function useQuestionHook() {
     arr.forEach((item, index) => {
       item.id = index + 1;
     });
-    return arr;
+    const randomMenuTypeArr = generateRandomMenuTypeList(arr, globDirection);
+    return randomMenuTypeArr;
   }
 
   /**
@@ -93,8 +107,6 @@ export function useQuestionHook() {
     const level3Name = level3Obj.menuName;
     const level4Obj: Menu = getRandom(level3Obj.children!);
     const level4Name = level4Obj.menuName;
-    console.log(level1Name, level2Name, level3Name, level4Name);
-
     return { level1Name, level2Name, level3Name, level4Name };
   }
   /**
@@ -221,7 +233,7 @@ export function useQuestionHook() {
       questionList.forEach((item) => {
         strList.push({
           questionType,
-          questionStr: `该页面中节点${item.question.level1Name}-${item.question.level2Name}-${item.question.level3Name}-${item.question.level4Name}否正确`,
+          questionStr: `该页面中节点路径“${item.question.level1Name}-${item.question.level2Name}-${item.question.level3Name}-${item.question.level4Name}“否正确`,
           isTrue: item.isTrue,
         });
       });
@@ -274,19 +286,13 @@ export function useQuestionHook() {
     const bool = chanceBoolean();
     return;
   }
-  function arrayRepeat(arr: TypeRandom[], num: number) {
-    let newArr: TypeRandom[] = [];
-    for (let i = 0; i < num; i++) {
-      newArr = newArr.concat(arr);
-    }
-    return newArr;
-  }
+  
 
   function generateFirstTypeList() {
-    const arr: TypeRandom[] = [];
+    const arr: MenuType[] = [];
     nums.forEach((item, index) => {
       for (let index = 0; index < 2; index++) {
-        const obj: TypeRandom = {
+        const obj: MenuType = {
           num: item,
           thirdDirection: sTypes[index],
           globDirection: gTypes[index],
