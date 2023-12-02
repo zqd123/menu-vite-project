@@ -1,0 +1,1 @@
+import{_ as t}from"./plugin-vueexport-helper-c27b6911.js";import{o,l as s,m as e}from"./index-f5bc4975.js";const c={},n={class:"flex flex-col justify-center items-center"},r=e("div",null,"完成!",-1),_=e("div",null,"感谢您的合作!",-1),a=[r,_];function i(l,d){return o(),s("div",n,a)}const u=t(c,[["render",i]]);export{u as default};
