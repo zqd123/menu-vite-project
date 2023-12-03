@@ -24,6 +24,11 @@ const routes: RouteRecordRaw[] = [
         name: "menu-test",
         component: () => import("../views/menu/menu.vue")
       },
+      {
+        path:"export",
+        name:"export",
+        component:()=>import("../views/menu/ExportDialog.vue")
+      }
     ],
   },
   {

@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import { Menu, useProcessData } from "./useProcessDataHook";
 import NProgress from "../../utils/progress";
 import { useQuestionHook } from "./questionHook";
+import { useRouter } from "vue-router";
 const {
   allMenu,
   remainMenu,
@@ -14,6 +15,7 @@ const {
   createLevelDataList,
 } = useProcessData();
 export function useMenu() {
+  const router = useRouter();
   const isHide = ref(false); // 展开下级菜单,隐藏上级菜单
   const isGlobalColumn = ref(false); // 菜单全局方向
   const isThirdColumn = ref(false); // 三级菜单方向
@@ -134,6 +136,12 @@ export function useMenu() {
     isShowSecondMenu.value = false;
     isShowThirdMenu.value = false;
   };
+  /**回到登录页 */
+  function goLogin() {
+    router.push("/menu/login");
+    sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("answer");
+  }
   return {
     isHide,
     isGlobalColumn,
@@ -153,5 +161,6 @@ export function useMenu() {
     menuLevel1List,
     menuLevel2List,
     menuLevel3List,
+    goLogin,
   };
 }

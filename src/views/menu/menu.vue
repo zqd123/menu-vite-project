@@ -1,4 +1,10 @@
 <template>
+  <!-- 返回登录页 -->
+  <div class="absolute left-0 bottom-0">
+    <el-icon color="#FFF" @click="goLogin">
+      <House />
+    </el-icon>
+  </div>
   <div
     class="flex h-full w-full"
     :class="isGlobalColumn ? 'flex-col' : 'flex-row'"
@@ -90,11 +96,13 @@
   <!-- 问题弹窗 -->
   <QuestionDialog
     v-if="isShowQuestionDialog"
+    :currentMenuTypeObj="currentMenuTypeObj"
+    :currentGlobDirection="currentGlobDirection"
+    :isHide="isHide"
+    :currentType="currentType"
     :questionStrList="questionStrList"
     @refreshMenu="refreshMenu"
   ></QuestionDialog>
-  <!-- 数据导出弹窗 -->
-  <ExportDialog v-if="isShowExportDialog"></ExportDialog>
 </template>
 Í
 <script lang="ts" setup>
@@ -126,6 +134,7 @@ const {
   menuLevel1List,
   menuLevel2List,
   menuLevel3List,
+  goLogin,
 } = useMenu();
 
 const { createMenuTypeList, createQuestionList, questionStrList } =
@@ -163,73 +172,97 @@ async function initShowMenu({
   isShowQuestionDialog.value = true;
 }
 const questionType: QuestionType[] = ["type1", "type2"];
+/**当前问题类型 */
 let currentType: QuestionType = "type1";
+/**当前菜单类型 */
+let currentMenuTypeObj: MenuType = menuTypeList[menuTypeIndex];
+/**当前全局方向 */
 let currentGlobDirection: vh = "column";
 // 生成12种菜单
 function menuTypeInit(globDirection: vh = "column") {
   menuTypeList = createMenuTypeList(globDirection);
 }
-function typeInit(type: QuestionType = "type1",direction:vh='row',repeat:number=4) {
+function typeInit(
+  type: QuestionType = "type1",
+  direction: vh = "row",
+  repeat: number = 4
+) {
   currentType = type;
   currentGlobDirection = direction;
   menuTypeIndex = 10;
   menuTypeInit(currentGlobDirection);
+  currentMenuTypeObj = menuTypeList[menuTypeIndex];
   refreshMenu();
 }
 /**
- * 
+ *
  * @description 更新
  * @param params 路由参数
  */
-function updateRouteParams({ globDirection, type}:{globDirection?: vh,type?: QuestionType}) {
+function updateRouteParams({
+  globDirection,
+  type,
+}: {
+  globDirection?: vh;
+  type?: QuestionType;
+}) {
   router.push({
     name: "menu-test",
-    params:{
+    params: {
       globDirection: globDirection ?? route.params.globDirection,
       type: type ?? route.params.type,
     },
   });
 }
 /**监听路径参数变化 */
-watch([()=>route.params.globDirection,()=>route.params.type],(newVal,oldVal)=>{
-  console.log(newVal,oldVal);
-  const {globDirection,type} = route.params
-  typeInit(type as QuestionType,globDirection as vh)
-},{immediate:true })
+watch(
+  [() => route.params.globDirection, () => route.params.type],
+  (newVal, oldVal) => {
+    console.log(newVal, oldVal);
+    const { globDirection, type } = route.params;
+    typeInit(type as QuestionType, globDirection as vh);
+  },
+  { immediate: true }
+);
 
 function refreshMenu() {
   if (menuTypeIndex === menuTypeList.length - 1) {
     if (currentType === "type1") {
       updateRouteParams({ type: "type2" });
-      return
+      return;
     }
-    if (currentGlobDirection === 'column' && currentType === 'type2') {
-      overTest()
-      return
-    }else{
-      updateRouteParams({globDirection:'column'})
-      return
+    if (currentGlobDirection === "column" && currentType === "type2") {
+      overTest();
+      return;
+    } else {
+      updateRouteParams({ globDirection: "column", type: "type1" });
+      return;
     }
   }
   isShowQuestionDialog.value = false;
+  currentMenuTypeObj = menuTypeList[menuTypeIndex];
   const { num, isFirstShow, globDirection, thirdDirection, id } =
     menuTypeList[menuTypeIndex];
   isGlobalColumn.value = globDirection === "column";
   isHide.value = isFirstShow;
   isThirdColumn.value = thirdDirection === "column";
   console.log("🚀 ~ file: menu.vue:144 ~ refreshMenu ~ num:", num);
-  initShowMenu({ num,questionNumber:currentType === 'type1' ? 1 : 1});
+  initShowMenu({ num, questionNumber: currentType === "type1" ? 4 : 3 });
   console.log(
     "🚀 ~ file: menu.vue:147 ~ refreshMenu ~ menuTypeIndex:",
     menuTypeIndex
   );
   menuTypeIndex++;
 }
+/**实验结束 */
 function overTest() {
-  console.log('实验结束');
-  
-  isShowQuestionDialog.value = false;
-  isShowExportDialog.value = true;
+  console.log("实验结束");
+  router.push({
+    path: "/menu/export",
+  });
+
+  // isShowQuestionDialog.value = false;
+  // isShowExportDialog.value = true;
 }
 //初始化
 // refreshMenu()

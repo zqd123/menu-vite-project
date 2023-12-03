@@ -11,11 +11,12 @@ const experimentStore = useExperimentStore();
 /**页面加载后,删除userName */
 window.onunload = function () {
   sessionStorage.removeItem("userName");
+  sessionStorage.removeItem("answer");
 };
 </script>
 
 <template>
-  <div class="h-full flex justify-start">
+  <div class="h-full w-full flex justify-start">
     <RouterView></RouterView>
   </div>
 </template>
