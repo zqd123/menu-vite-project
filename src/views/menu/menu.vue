@@ -172,7 +172,7 @@ function menuTypeInit(globDirection: vh = "column") {
 function typeInit(type: QuestionType = "type1",direction:vh='row',repeat:number=4) {
   currentType = type;
   currentGlobDirection = direction;
-  menuTypeIndex = 0;
+  menuTypeIndex = 10;
   menuTypeInit(currentGlobDirection);
   refreshMenu();
 }
@@ -190,6 +190,7 @@ function updateRouteParams({ globDirection, type}:{globDirection?: vh,type?: Que
     },
   });
 }
+/**监听路径参数变化 */
 watch([()=>route.params.globDirection,()=>route.params.type],(newVal,oldVal)=>{
   console.log(newVal,oldVal);
   const {globDirection,type} = route.params
@@ -200,9 +201,14 @@ function refreshMenu() {
   if (menuTypeIndex === menuTypeList.length - 1) {
     if (currentType === "type1") {
       updateRouteParams({ type: "type2" });
+      return
     }
-    if (currentType === 'type2') {
+    if (currentGlobDirection === 'column' && currentType === 'type2') {
+      overTest()
+      return
+    }else{
       updateRouteParams({globDirection:'column'})
+      return
     }
   }
   isShowQuestionDialog.value = false;
@@ -212,7 +218,7 @@ function refreshMenu() {
   isHide.value = isFirstShow;
   isThirdColumn.value = thirdDirection === "column";
   console.log("🚀 ~ file: menu.vue:144 ~ refreshMenu ~ num:", num);
-  initShowMenu({ num,questionNumber:currentType === 'type1' ? 4 : 3});
+  initShowMenu({ num,questionNumber:currentType === 'type1' ? 1 : 1});
   console.log(
     "🚀 ~ file: menu.vue:147 ~ refreshMenu ~ menuTypeIndex:",
     menuTypeIndex
@@ -220,6 +226,8 @@ function refreshMenu() {
   menuTypeIndex++;
 }
 function overTest() {
+  console.log('实验结束');
+  
   isShowQuestionDialog.value = false;
   isShowExportDialog.value = true;
 }
