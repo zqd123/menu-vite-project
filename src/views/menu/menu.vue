@@ -189,7 +189,7 @@ function typeInit(
 ) {
   currentType = type;
   currentGlobDirection = direction;
-  menuTypeIndex = 10;
+  menuTypeIndex = 0;
   menuTypeInit(currentGlobDirection);
   currentMenuTypeObj = menuTypeList[menuTypeIndex];
   refreshMenu();
