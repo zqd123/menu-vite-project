@@ -247,7 +247,7 @@ function refreshMenu() {
   isHide.value = isFirstShow;
   isThirdColumn.value = thirdDirection === "column";
   console.log("🚀 ~ file: menu.vue:144 ~ refreshMenu ~ num:", num);
-  initShowMenu({ num, questionNumber: currentType === "type1" ? 4 : 3 });
+  initShowMenu({ num,questionType:currentType, questionNumber: currentType === "type1" ? 4 : 3 });
   console.log(
     "🚀 ~ file: menu.vue:147 ~ refreshMenu ~ menuTypeIndex:",
     menuTypeIndex
