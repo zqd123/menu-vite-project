@@ -1,0 +1,194 @@
+[
+    {
+      "currentMenuTypeObj": {
+        "num": 7,
+        "thirdDirection": "row",
+        "globDirection": "row",
+        "isFirstShow": false,
+        "id": 9
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "2.14"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 7,
+        "thirdDirection": "row",
+        "globDirection": "row",
+        "isFirstShow": false,
+        "id": 9
+      },
+      "questionType": "type1",
+      "isAnswerTrue": true,
+      "times": "1.59"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 7,
+        "thirdDirection": "row",
+        "globDirection": "row",
+        "isFirstShow": false,
+        "id": 9
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "1.50"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 7,
+        "thirdDirection": "row",
+        "globDirection": "row",
+        "isFirstShow": false,
+        "id": 9
+      },
+      "questionType": "type1",
+      "isAnswerTrue": true,
+      "times": "1.29"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 9,
+        "thirdDirection": "column",
+        "globDirection": "row",
+        "isFirstShow": true,
+        "id": 6
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "2.17"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 9,
+        "thirdDirection": "column",
+        "globDirection": "row",
+        "isFirstShow": true,
+        "id": 6
+      },
+      "questionType": "type1",
+      "isAnswerTrue": true,
+      "times": "1.43"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 9,
+        "thirdDirection": "column",
+        "globDirection": "row",
+        "isFirstShow": true,
+        "id": 6
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "1.42"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 9,
+        "thirdDirection": "column",
+        "globDirection": "row",
+        "isFirstShow": true,
+        "id": 6
+      },
+      "questionType": "type3",
+      "guessNum": 59,
+      "times": "1.79"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 5,
+        "thirdDirection": "row",
+        "globDirection": "column",
+        "isFirstShow": false,
+        "id": 7
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "1.93"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 5,
+        "thirdDirection": "row",
+        "globDirection": "column",
+        "isFirstShow": false,
+        "id": 7
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "1.76"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 5,
+        "thirdDirection": "row",
+        "globDirection": "column",
+        "isFirstShow": false,
+        "id": 7
+      },
+      "questionType": "type1",
+      "isAnswerTrue": true,
+      "times": "1.52"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 5,
+        "thirdDirection": "row",
+        "globDirection": "column",
+        "isFirstShow": false,
+        "id": 7
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "1.43"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 9,
+        "thirdDirection": "column",
+        "globDirection": "column",
+        "isFirstShow": false,
+        "id": 5
+      },
+      "questionType": "type1",
+      "isAnswerTrue": true,
+      "times": "2.03"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 9,
+        "thirdDirection": "column",
+        "globDirection": "column",
+        "isFirstShow": false,
+        "id": 5
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "1.91"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 9,
+        "thirdDirection": "column",
+        "globDirection": "column",
+        "isFirstShow": false,
+        "id": 5
+      },
+      "questionType": "type1",
+      "isAnswerTrue": false,
+      "times": "1.56"
+    },
+    {
+      "currentMenuTypeObj": {
+        "num": 9,
+        "thirdDirection": "column",
+        "globDirection": "column",
+        "isFirstShow": false,
+        "id": 5
+      },
+      "questionType": "type3",
+      "guessNum": 55,
+      "times": "2.42"
+    }
+  ]

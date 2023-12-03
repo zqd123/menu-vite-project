@@ -48,7 +48,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, ref, watch } from "vue";
-import { MenuType,QuestionStr, QuestionType, vh } from "./questionHook";
+import { AnswerItem,MenuType,QuestionStr, QuestionType, vh } from "./questionHook";
 const emit = defineEmits(["refreshMenu"]);
 const props = defineProps<{
   /**当前菜单类型 */
@@ -86,13 +86,6 @@ function showQuestionStr(str: string | undefined) {
     return mapStr;
   }
   return "";
-}
-interface AnswerItem {
-  currentMenuTypeObj: MenuType;
-  questionType?: QuestionType;
-  isAnswerTrue?: boolean;
-  guessNum?: number;
-  times?: string;
 }
 /**
  * 选择答案

@@ -28,6 +28,13 @@ export interface QuestionStr {
   isTrue: boolean;
 }
 export type QuestionType = "type1" | "type2" | "type3";
+export interface AnswerItem {
+  currentMenuTypeObj: MenuType;
+  questionType?: QuestionType;
+  isAnswerTrue?: boolean;
+  guessNum?: number;
+  times?: string;
+}
 export function useQuestionHook() {
   //最终要展示的问题
   const questionStrList = ref<QuestionStr[]>([]);
