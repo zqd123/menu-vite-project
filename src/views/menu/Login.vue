@@ -55,6 +55,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           ><el-icon style="margin-right: 8px"><CaretRight /></el-icon>
           确认</el-button
         >
+        本实验为导航搜索任务，请根据随后出现的页面中的问题，在导航栏中进行单词的关联关系搜索，并回答问题。
       </el-form>
     </el-card>
   </div>

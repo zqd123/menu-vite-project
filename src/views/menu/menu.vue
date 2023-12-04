@@ -63,7 +63,7 @@
     <!-- 三四级菜单 -->
     <transition name="fade">
       <div
-        v-show="isShowThirdMenu"
+        v-show="isShowThirdMenu && currentType === 'type2'"
         class="flex-1 bg-[#ffffff] flex gap-1 text-black overflow-auto"
         :class="thirdCenter"
       >
@@ -247,7 +247,7 @@ function refreshMenu() {
   isHide.value = isFirstShow;
   isThirdColumn.value = thirdDirection === "column";
   console.log("🚀 ~ file: menu.vue:144 ~ refreshMenu ~ num:", num);
-  initShowMenu({ num,questionType:currentType, questionNumber: currentType === "type1" ? 4 : 3 });
+  initShowMenu({ num,questionType:currentType, questionNumber: currentType === "type1" ? 3 : 3 });
   console.log(
     "🚀 ~ file: menu.vue:147 ~ refreshMenu ~ menuTypeIndex:",
     menuTypeIndex

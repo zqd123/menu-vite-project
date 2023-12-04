@@ -8,7 +8,7 @@
     append-to-body
     width="50%"
     draggable
-    top="85vh"
+    top="50vh"
     id="modelDialogRef"
     class="dialog-question"
   >
@@ -32,7 +32,7 @@
     <div v-show="isAnswerQuestionType3">
       <span>{{ questionType3 }}</span>
       <div class="flex justify-center gap-10 p-2 ">
-        <el-slider v-model="menuNum" />
+        <el-slider v-model="menuNum" :max="200" />
         <span>{{ menuNum }}</span>
         <el-button
           :disabled="!menuNum"
@@ -61,7 +61,7 @@ const props = defineProps<{
   questionStrList: QuestionStr[];
 }>();
 const questionType3 =
-  "凭直觉快速判断该单页面显示中多少个英文单词（请移动滑块至估计值）";
+  "凭直觉快速判断该单页面蓝色、灰色和白色三层级显示中多少个英文单词（请移动滑块至估计值）";
 const menuNum = ref(0);
 const isAnswerQuestionType3 = ref(false);
 const answerValue = ref<number>(0);
