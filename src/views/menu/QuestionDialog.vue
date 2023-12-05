@@ -49,7 +49,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { AnswerItem,MenuType,QuestionStr, QuestionType, vh } from "./questionHook";
-const emit = defineEmits(["refreshMenu"]);
+const emit = defineEmits(["refreshMenu",'menuInitStatus']);
 const props = defineProps<{
   /**当前菜单类型 */
   currentMenuTypeObj:MenuType;
@@ -112,6 +112,7 @@ function selectHandle() {
     }
     emit("refreshMenu");
   } else {
+    emit('menuInitStatus')
     questionIndex.value++;
     answerValue.value = 0;
   }

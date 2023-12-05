@@ -102,6 +102,7 @@
     :currentType="currentType"
     :questionStrList="questionStrList"
     @refreshMenu="refreshMenu"
+    @menuInitStatus="menuInitStatus"
   ></QuestionDialog>
 </template>
 Í
@@ -156,9 +157,7 @@ async function initShowMenu({
   questionType?: QuestionType;
   questionNumber?: number;
 }) {
-  isShowFirstMenu.value = true;
-  isShowSecondMenu.value = false;
-  isShowThirdMenu.value = false;
+  menuInitStatus();
   await initMenu(num);
   console.log("菜单初始化成功");
 
@@ -179,8 +178,8 @@ let currentMenuTypeObj: MenuType = menuTypeList[menuTypeIndex];
 /**当前全局方向 */
 let currentGlobDirection: vh = "column";
 // 生成12种菜单
-function menuTypeInit(globDirection: vh = "column") {
-  menuTypeList = createMenuTypeList(globDirection);
+function menuTypeInit(globDirection: vh = "column",currentType: QuestionType = "type1") {
+  menuTypeList = createMenuTypeList(globDirection,currentType);
 }
 function typeInit(
   type: QuestionType = "type1",
@@ -190,7 +189,7 @@ function typeInit(
   currentType = type;
   currentGlobDirection = direction;
   menuTypeIndex = 0;
-  menuTypeInit(currentGlobDirection);
+  menuTypeInit(currentGlobDirection,currentType);
   currentMenuTypeObj = menuTypeList[menuTypeIndex];
   refreshMenu();
 }
@@ -263,6 +262,14 @@ function overTest() {
 
   // isShowQuestionDialog.value = false;
   // isShowExportDialog.value = true;
+}
+/**
+ * 重置菜单状态
+ */
+function menuInitStatus(){
+  isShowFirstMenu.value = true;
+  isShowSecondMenu.value = false;
+  isShowThirdMenu.value = false;
 }
 //初始化
 // refreshMenu()

@@ -61,9 +61,12 @@ export function useQuestionHook() {
    * @param globDirection 全局方向
    * @returns
    */
-  function createMenuTypeList(globDirection: vh = "column") {
+  function createMenuTypeList(globDirection: vh = "column",currentType: QuestionType = "type1") {
     const arr: MenuType[] = [];
     gTypes.forEach((item, index) => {
+      if (currentType==='type1'&&index===0) {
+        return
+      }
       nums.forEach((item2, index2) => {
         isB.forEach((item3, index3) => {
           arr.push({
