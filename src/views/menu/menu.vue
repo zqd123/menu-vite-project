@@ -225,7 +225,7 @@ watch(
 );
 
 function refreshMenu() {
-  if (menuTypeIndex === menuTypeList.length - 1) {
+  if (menuTypeIndex === menuTypeList.length) {
     if (currentType === "type1") {
       updateRouteParams({ type: "type2" });
       return;

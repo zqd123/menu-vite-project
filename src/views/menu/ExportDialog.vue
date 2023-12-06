@@ -17,9 +17,9 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="index" label="序号" width="60" />
         <el-table-column prop="questionType" label="任务" width="180" />
-        <el-table-column prop="type" label="题目类型" width="180" />
+        <el-table-column prop="type" label="题目类型" width="280" />
         <el-table-column prop="answerValue" label="回答正确" width="180" />
-        <el-table-column prop="guessNum" label="估计数量" />
+        <el-table-column prop="guessNum" label="估计菜单数量" />
         <el-table-column prop="time" label="用时(s)" />
       </el-table>
     </div>
@@ -57,7 +57,7 @@ function exportExcel() {
     tableData.value
   );
 
-  const excelHeader = `序号,任务,题目类型,回答正确,估计数量,用时(s)\n`
+  const excelHeader = `序号,任务,题目类型,回答正确,估计菜单数量,用时(s)\n`
   download(excelHeader,tableData.value)
 }
 
@@ -90,9 +90,9 @@ function mappingAnswerData(answerData: AnswerItem[]) {
       item.currentMenuTypeObj;
     const answerItem: TableObj = {
       index:index + 1,
-      questionType:item.questionType ?? '',
-      type: `${globDirection}-${isFirstShow}-${thirdDirection}-${num}`,
-      answerValue: item.isAnswerTrue ?? "",
+      questionType:item.questionType === 'type1' ? '任务1': item.questionType === 'type2' ? '任务2':'任务3', 
+      type: `${globDirection === 'row' ? '横向':'纵向'}-${isFirstShow ? '1级隐藏':'1级展示'}-${thirdDirection === 'row' ? '3级横向':'3级纵向'}-菜单数${num}`,
+      answerValue: item.isAnswerTrue === true ? '正确':item.isAnswerTrue === false ? '错误':'',
       guessNum: item.guessNum ?? '',
       time: item.times ?? "",
     };

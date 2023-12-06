@@ -235,7 +235,7 @@ export function useQuestionHook() {
       questionList.forEach((item) => {
         strList.push({
           questionType,
-          questionStr: `该页面中节点${item.question.level1Name}与节点${item.question.level2Name}是否属于父子关系`,
+          questionStr: `该页面蓝、灰（扩展层级）两个层级中节点“${item.question.level1Name}”与节点”${item.question.level2Name}“是否属于父子关系？`,
           isTrue: item.isTrue,
         });
       });
@@ -243,7 +243,7 @@ export function useQuestionHook() {
       questionList.forEach((item) => {
         strList.push({
           questionType,
-          questionStr: `该页面中节点路径“${item.question.level1Name}-${item.question.level2Name}-${item.question.level3Name}-${item.question.level4Name}“否正确`,
+          questionStr: `该页面蓝、灰（扩展层级）、白（扩展层级）三个层级中节点路径“${item.question.level1Name}-${item.question.level2Name}-${item.question.level3Name}-${item.question.level4Name}”是否正确？`,
           isTrue: item.isTrue,
         });
       });

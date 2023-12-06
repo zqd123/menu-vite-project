@@ -14,7 +14,7 @@
   >
     <div v-show="!isAnswerQuestionType3">
       <span v-html="showQuestionStr(currentQuestion?.questionStr)"></span>
-      <div class="flex justify-center p-2">
+      <div class="flex gap-10 p-2">
         <el-radio-group v-model="answerValue">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="2">否</el-radio>
@@ -22,7 +22,6 @@
         <el-button
           :disabled="!answerValue"
           type="primary"
-          class="ml-auto"
           @click="selectHandle"
         >
           确认
@@ -31,13 +30,12 @@
     </div>
     <div v-show="isAnswerQuestionType3">
       <span>{{ questionType3 }}</span>
-      <div class="flex justify-center gap-10 p-2 ">
+      <div class="flex gap-10 p-2 w-2/3">
         <el-slider v-model="menuNum" :max="200" />
         <span>{{ menuNum }}</span>
         <el-button
           :disabled="!menuNum"
           type="primary"
-          class="ml-auto"
           @click="sliderHandle"
         >
           确认
