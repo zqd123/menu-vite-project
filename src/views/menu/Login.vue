@@ -38,6 +38,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     >
       <el-icon color="#409EFC" :size="50" class="mb-8"><Opportunity /></el-icon>
       <el-form
+        @submit.native.enter="submitForm(ruleFormRef)"
         ref="ruleFormRef"
         :rules="rules"
         :label-position="labelPosition"
